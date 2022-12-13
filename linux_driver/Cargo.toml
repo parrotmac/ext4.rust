@@ -1,0 +1,10 @@
+[package]
+name = "linux_driver"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ext4 = { path = "../", features = ["std"] }
+rand = { version = "*" }
+fs_core = { path = "../fs-core" }
+path = { path = "../path" }

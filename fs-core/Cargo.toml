@@ -1,0 +1,8 @@
+[package]
+name = "fs_core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bitflags = "1.2.1"
+path = { path = "../path" }
