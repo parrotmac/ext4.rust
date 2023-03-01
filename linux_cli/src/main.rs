@@ -4,6 +4,9 @@ mod shell;
 use std::fs::OpenOptions;
 use std::path::Path;
 
+extern crate alloc;
+use alloc::sync::Arc;
+
 fn do_shell(path: &str) {
     let file = OpenOptions::new()
         .read(true)
@@ -11,11 +14,14 @@ fn do_shell(path: &str) {
         .open(Path::new(path))
         .expect("Failed to open device.");
 
-    match ext4::open_fs(file).unwrap() {
-        ext4::FsBlkSizeDispatch::Blk1024(fs) => shell::Shell::new(fs).run(),
-        ext4::FsBlkSizeDispatch::Blk2048(fs) => shell::Shell::new(fs).run(),
-        ext4::FsBlkSizeDispatch::Blk4096(fs) => shell::Shell::new(fs).run(),
-    }
+    let fs = ext4::open_fs::<_, 1024>(file).unwrap();
+    shell::Shell::new(fs).run();
+
+    // match ext4::open_fs(file).unwrap() {
+    //     ext4::FsBlkSizeDispatch::Blk1024(fs) => shell::Shell::new(fs).run(),
+    //     ext4::FsBlkSizeDispatch::Blk2048(fs) => shell::Shell::new(fs).run(),
+    //     ext4::FsBlkSizeDispatch::Blk4096(fs) => shell::Shell::new(fs).run(),
+    // }
 }
 
 fn main() {
